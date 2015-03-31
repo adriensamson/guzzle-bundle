@@ -15,7 +15,7 @@ class EmitterCompilerPass implements CompilerPassInterface
                 if (!isset($tag['client'])) {
                     $configurator = $container->getDefinition('adriensamson_guzzle.base_configurator');
                 } else {
-                    $configurator = $container->getDefinition(sprintf('adriensamson_guzzle.%s.configurator', $tag['client']));
+                    $configurator = $container->getDefinition(sprintf('adriensamson_guzzle.configurator.%s', $tag['client']));
                 }
                 $configurator->addMethodCall('addSubscriber', [new Reference($serviceId)]);
             }

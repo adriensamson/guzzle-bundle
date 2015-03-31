@@ -25,11 +25,11 @@ class AdrienSamsonGuzzleExtension extends Extension
 
         foreach ($config['clients'] as $name => $client) {
             $configurator = new Definition('AdrienSamson\GuzzleBundle\ClientConfigurator', [new Reference('adriensamson_guzzle.base_configurator')]);
-            $container->setDefinition(sprintf('adriensamson_guzzle.%s.configurator', $name), $configurator);
+            $container->setDefinition(sprintf('adriensamson_guzzle.configurator.%s', $name), $configurator);
 
             $definition = new Definition('GuzzleHttp\Client', [$client['config']]);
-            $definition->setConfigurator([new Reference(sprintf('adriensamson_guzzle.%s.configurator', $name)), 'configure']);
-            $container->setDefinition(sprintf('adriensamson_guzzle.%s', $name), $definition);
+            $definition->setConfigurator([new Reference(sprintf('adriensamson_guzzle.configurator.%s', $name)), 'configure']);
+            $container->setDefinition(sprintf('adriensamson_guzzle.client.%s', $name), $definition);
         }
     }
 
