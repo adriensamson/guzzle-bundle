@@ -1,0 +1,22 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+           xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+    <services>
+        <service id="adriensamson_guzzle.logger" class="AdrienSamson\GuzzleBundle\DataCollector\GuzzleLogger">
+            <tag name="adriensamson_guzzle.subscriber" />
+        </service>
+
+        <service id="adriensamson_guzzle.stopwatch_subscriber" class="AdrienSamson\GuzzleBundle\DataCollector\StopwatchSubscriber">
+            <argument type="service" id="debug.stopwatch" />
+            <tag name="adriensamson_guzzle.subscriber"/>
+        </service>
+
+
+        <service id="adriensamson_guzzle.data_collector" class="AdrienSamson\GuzzleBundle\DataCollector\GuzzleDataCollector">
+            <argument type="service" id="adriensamson_guzzle.logger" />
+            <tag name="data_collector" template="AdrienSamsonGuzzleBundle:DataCollector:guzzle.html.twig" id="guzzle" />
+        </service>
+    </services>
+</container>

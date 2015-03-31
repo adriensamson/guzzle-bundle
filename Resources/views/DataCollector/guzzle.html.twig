@@ -1,0 +1,70 @@
+{% extends 'WebProfilerBundle:Profiler:layout.html.twig' %}
+
+{% block toolbar %}
+    {% set icon %}
+        <span class="sf-toolbar-status">{{ collector.messages | length }}</span>
+    {% endset %}
+    {% include 'WebProfilerBundle:Profiler:toolbar_item.html.twig' with { 'link': profiler_url } %}
+{% endblock %}
+
+{% block menu %}
+    <span class="label">
+        <span class="icon"></span>
+        <strong>Guzzle</strong>
+        <span class="count">
+            <span>{{ collector.messages | length }}</span>
+            <span>{{ '%0.0f'|format(collector.totalTime * 1000) }} ms</span>
+        </span>
+    </span>
+{% endblock %}
+
+{% block panel %}
+    {% for message in collector.messages %}
+    <h2 onclick="this.nextElementSibling.style.display = this.nextElementSibling.style.display == 'none' ? 'block' : 'none';">{{ message.request.url }} <small>{{ message.response.status_code }}</small> <small>({{ '%0.0f'|format(message.transfer_info.total_time * 1000) }} ms)</small></h2>
+    <div style="display: none">
+        <h3>Request headers</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Header name</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for headerName, headerLines in message.request.headers %}
+            <tr>
+                <td>{{ headerName }}</td>
+                <td>{{ headerLines | join('<br>') }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if message.request.body is not null %}
+            <h3>Request body</h3>
+            <pre>{{ message.request.body }}</pre>
+        {% endif %}
+
+        <h3>Response headers</h3>
+        <table>
+            <thead>
+            <tr>
+                <th>Header name</th>
+                <th>Value</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for headerName, headerLines in message.response.headers %}
+                <tr>
+                    <td>{{ headerName }}</td>
+                    <td>{{ headerLines | join('<br>') }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% if message.response.body is not null %}
+            <h3>Response body</h3>
+            <pre>{{ message.response.body }}</pre>
+        {% endif %}
+    </div>
+    {% endfor %}
+{% endblock %}
